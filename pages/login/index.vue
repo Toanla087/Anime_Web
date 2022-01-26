@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
   export default {
     layout: 'auth',
     data() {
@@ -54,19 +54,27 @@ import axios from 'axios'
       }
     },
     methods: {
-       async onSubmit(event) {
+      onSubmit(event) {
         event.preventDefault()
         // alert(JSON.stringify(this.form))
         // const data = {
             
         // }
-
-        await axios.post('https://mangakool-server.herokuapp.com/login', {
+        this.$store.dispatch('auth/login', {
             username: this.form.name,
             password: this.form.pass
         })
+            .then(response => {
+            this.$router.push('/')
+            })
+        // },
 
-        this.$router.push('/')
+        // await axios.post('https://mangakool-server.herokuapp.com/login', {
+        //     username: this.form.name,
+        //     password: this.form.pass
+        // })
+
+        // this.$router.push('/')
             
       }
     }

@@ -46,7 +46,7 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
   export default {
     layout: 'auth',
     data() {
@@ -58,19 +58,29 @@ import axios from 'axios'
       }
     },
     methods: {
-       async onSubmit(event) {
+        // register() {
+            
+        // },
+      onSubmit(event) {
         event.preventDefault()
         // alert(JSON.stringify(this.form))
         // const data = {
             
         // }
-
-        await axios.post('https://mangakool-server.herokuapp.com/signup', {
+        this.$store.dispatch('auth/register', {
             username: this.form.name,
             password: this.form.pass,
         })
+            .then(response => {
+            this.$router.push('/login')
+            })
 
-        this.$router.push('/login')
+        // await axios.post('https://mangakool-server.herokuapp.com/signup', {
+        //     username: this.form.name,
+        //     password: this.form.pass,
+        // })
+
+        // this.$router.push('/login')
             
       }
     }

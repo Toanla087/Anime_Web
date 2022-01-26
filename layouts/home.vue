@@ -32,8 +32,9 @@
                                 </b-navbar-nav>
 
                                 <b-navbar-nav class="ml-auto">
-                                    <nuxt-link to="/login" class="nav-link btn-log">ĐĂNG NHẬP</nuxt-link>
-                                    <nuxt-link to="/register" type="button" class="btn btn-regis nav-link">ĐĂNG KÝ</nuxt-link>
+                                    <nuxt-link to="/login" class="nav-link btn-log" v-if="!loggedIn">ĐĂNG NHẬP</nuxt-link>
+                                    <nuxt-link to="/register" type="button" class="btn btn-regis nav-link" v-if="!loggedIn">ĐĂNG KÝ</nuxt-link>
+                                    <b-link class="nav-link"  v-if="loggedIn" @click="logout">Logout</b-link>
                                 </b-navbar-nav>
                             </b-navbar>
                         </div>
@@ -47,6 +48,7 @@
 
 <script>
 import axios from 'axios'
+import {mapGetters} from 'vuex'
 export default {
   name: 'IndexPage',
   data() {
@@ -54,11 +56,26 @@ export default {
       genres: [],
     }
   },
+  methods: {
+    logout() {
+      this.$store.dispatch('auth/logout');
+      // localStorage.removeItem('access_token');
+      this.$router.push('/');
+    }
+  },
+  computed: {
+    // loggedIn() {
+    //   return this.$store.getters.auth.loggedIn;
+    // },
+    ...mapGetters ({
+      'loggedIn' : "auth/loggedIn",
+    })
+  },
   mounted() {
     axios.get('https://mangakool-server.herokuapp.com/genres').then(res => {
       this.genres = res.data
     })
-  }
+  },
 }
 </script>
 
