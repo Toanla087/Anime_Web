@@ -6,6 +6,12 @@ export const state = () => ({
   })
   
   export const getters = {
+    mangas(state) {
+      return state.mangas
+    },
+    chapters(state) {
+      return state.chapters
+    }
     
   }
   
@@ -35,6 +41,7 @@ export const state = () => ({
         (item) => item.id === chapter.manga_id
       )
       state.mangas[index].manga_id = chapter.manga_id
+      console.log(chapter.manga_id)
     },
   }
   
@@ -44,6 +51,7 @@ export const state = () => ({
       axios.post('https://mangakool-server.herokuapp.com/mangas', {
         cover: data.cover,
         manga_name: data.manga_name,
+        manga_id: data.manga_id,
         author: data.author,
         description: data.description,
       })
@@ -56,20 +64,25 @@ export const state = () => ({
     },
 
     addChapter(context, data) {
-      const mangaID = data.manga_id
+      const mangaID = state.mangas
+      console.log(mangaID)
       axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('login')
-      axios.post('https://mangakool-server.herokuapp.com/mangas/' + mangaID+ '/chapters', {
+      return new Promise((resolve, reject) => {
+      axios.post('https://mangakool-server.herokuapp.com/mangas/' + mangaID + '/chapters', {
         chap_id: data.chap_id,
         manga_id: data.manga_id,
         chap_name: data.chap_name,
         chap_content: data.chapter_content,
       })
         .then(response => {
-          context.commit('addManga', response.data)
+          context.commit('addChapter', response.data)
+          resolve(response)
         })
         .catch(error => {
           console.log(error)
+          reject(error)
         })
+      })
     },
   }
   

@@ -21,7 +21,7 @@ export const state = () => ({
     },
     deleteUser(state, user) {
       const index = state.users.findIndex(
-        (item) => item.id === user.user_id
+        (item) => item.id === user
       )
       state.users.splice(index, 1)
     },
@@ -68,8 +68,8 @@ export const state = () => ({
         })
     },
     deleteUser(context, user) {
-      axios.delete(`https://mangakool-server.herokuapp.com/admin/users/${user.user_id}`,
-      {headers: {Authorization: 'Bearer ' + localStorage.getItem('login')}})
+      axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('login')
+      axios.delete(`https://mangakool-server.herokuapp.com/admin/users/${user}`)
         .then(response => {
           context.commit('deleteUser', response)
         })
