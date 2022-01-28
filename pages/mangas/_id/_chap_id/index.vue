@@ -9,6 +9,7 @@
       <div class="row" v-for="(chapter, index) in chapters" :key="index">
         <div class="col">
           <h1>{{chapter.chap_name}}</h1>
+          <img :src="`${ chapter.chap_content}`" alt="">
         </div>
       </div>
     </div>
