@@ -76,6 +76,13 @@ export default {
       this.genres = res.data
     })
   },
+//   async created() {
+//       await axios.get('https://mangakool-server.herokuapp.com/info', {
+//           headers: {
+//               Authorization: 'Bearer ' + localStorage.getItem('login')
+//           }
+//       })
+//   }
 }
 </script>
 

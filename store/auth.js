@@ -2,6 +2,7 @@ import axios from 'axios'
 
 export const state = () => ({
     token: null,
+    users: [],
     isAdmin: false,
   })
   
@@ -17,6 +18,12 @@ export const state = () => ({
     },
     logout(state) {
       state.token = null
+    },
+    deleteUser(state, user) {
+      const index = state.users.findIndex(
+        (item) => item.id === user.user_id
+      )
+      state.users.splice(index, 1)
     },
   }
   
@@ -36,7 +43,7 @@ export const state = () => ({
       })
     },
     logout(context) {
-      axios.defaults.headers.common.Authorization = "Bearer " + context.state.token
+      // axios.defaults.headers.common.Authorization = "Bearer " + context.state.token
       if (context.getters.loggedIn) {
         localStorage.removeItem('login')
         context.commit('logout')
@@ -49,8 +56,8 @@ export const state = () => ({
           password: credentials.password,
         })
           .then(response => {
-            localStorage.setItem('login', JSON.stringify(response.data))
-            context.commit('login', credentials)
+            localStorage.setItem('login', response.data)
+            context.commit('login', response.data)
             resolve(response)
             
           })
@@ -58,6 +65,16 @@ export const state = () => ({
             console.log(error)
             reject(error)
           })
+        })
+    },
+    deleteUser(context, user) {
+      axios.delete(`https://mangakool-server.herokuapp.com/admin/users/${user.user_id}`,
+      {headers: {Authorization: 'Bearer ' + localStorage.getItem('login')}})
+        .then(response => {
+          context.commit('deleteUser', response)
+        })
+        .catch(error => {
+          console.log(error)
         })
     },
   }

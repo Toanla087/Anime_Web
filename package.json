@@ -26,6 +26,7 @@
     "bootstrap": "^4.6.1",
     "bootstrap-vue": "^2.21.2",
     "core-js": "^3.19.3",
+    "element-ui": "^2.15.6",
     "nuxt": "^2.15.8",
     "swiper": "^5.4.5",
     "vue": "^2.6.14",
