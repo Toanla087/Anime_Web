@@ -51,7 +51,7 @@
                     {{manga.manga_id}}
                     {{manga.num_of_chap}}
                     <b-button :to="`mangas/${manga.manga_id}`">Edit</b-button>
-                    <b-button>Delete</b-button>
+                    <b-button @click="removeManga(manga.manga_id)">Delete</b-button>
                 </div>
             </div>
         </div>
@@ -59,12 +59,13 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
+// import { mapState } from 'vuex';
 export default {
     layout: 'home',
     data() {
         return {
-            mangas: [],
+            mangas: this.$store.state.mangas.mangas,
             form: {
                 name: '',
                 author: '',
@@ -103,30 +104,34 @@ export default {
             description: this.form.desc,
         })
         },
+        removeManga(id) {
+            this.$store.dispatch('mangas/deleteManga', id)
+        },
 
     },
-    // mounted() {
-    //     axios.get('https://mangakool-server.herokuapp.com/admin/users').then(response => {
-    //     this.users = response.data
-    //     });
-    // },
-    async asyncData(context) {
-        try {
+    mounted () {
+        this.$store.dispatch('mangas/setManga')
+    },
+    // computed: mapState([
+    //     'mangas'
+    // ]),
+    // async asyncData(context) {
+    //     try {
 
-            const response= await axios.get('https://mangakool-server.herokuapp.com/admin/mangas', {
-                headers: {
-                    Authorization: 'Bearer ' + localStorage.getItem('login')
-                }
-            });
-            return {
-                // .then(response => {
-                    mangas: response.data
-                //   });
-            };
-        } catch(e) {
-            context.error(e);
-        }
-    }, 
+    //         const response= await axios.get('https://mangakool-server.herokuapp.com/admin/mangas', {
+    //             headers: {
+    //                 Authorization: 'Bearer ' + localStorage.getItem('login')
+    //             }
+    //         });
+    //         return {
+    //             // .then(response => {
+    //                 mangas: response.data
+    //             //   });
+    //         };
+    //     } catch(e) {
+    //         context.error(e);
+    //     }
+    // }, 
 }
 </script>
 

@@ -16,6 +16,9 @@ export const state = () => ({
   }
   
   export const mutations = {
+    setManga(state, manga) {
+      state.mangas = manga
+    },
     addManga(state, manga) {
       state.mangas.push({
         manga_id: manga.manga_id,
@@ -27,6 +30,12 @@ export const state = () => ({
         rating: manga.rating,
         cover: manga.cover
       })
+    },
+    deleteManga(state, manga) {
+      const index = state.mangas.findIndex(
+        (item) => item.id === manga
+      )
+      state.mangas.splice(index, 1)
     },
 
     addChapter(state, chapter) {
@@ -43,9 +52,18 @@ export const state = () => ({
       state.mangas[index].manga_id = chapter.manga_id
       console.log(chapter.manga_id)
     },
+
   }
   
   export const actions = {
+    setManga(context, data) {
+      axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('login')
+      axios
+        .get('https://mangakool-server.herokuapp.com/admin/mangas')
+        .then(response => {
+          context.commit('setManga', response.data)
+        })
+    },
     addManga(context, data) {
       axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('login')
       axios.post('https://mangakool-server.herokuapp.com/mangas', {
@@ -62,9 +80,19 @@ export const state = () => ({
           console.log(error)
         })
     },
+    deleteManga(context, manga) {
+      axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('login')
+      axios.delete(`https://mangakool-server.herokuapp.com/admin/users/${manga}`)
+        .then(response => {
+          context.commit('deleteManga', response)
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    },
 
     addChapter(context, data) {
-      const mangaID = state.mangas
+      const mangaID = data.chapter
       console.log(mangaID)
       axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('login')
       return new Promise((resolve, reject) => {
