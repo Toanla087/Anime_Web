@@ -39,7 +39,7 @@
                             <el-input type="textarea" v-model="form.desc"></el-input>
                         </el-form-item>
                         <el-form-item>
-                            <el-button type="primary" @click="onSubmit">Create</el-button>
+                            <el-button type="primary" @click="addManga()">Create</el-button>
                             <el-button>Cancel</el-button>
                         </el-form-item>
                     </el-form>
@@ -50,7 +50,7 @@
                     {{manga.manga_name}}
                     {{manga.manga_id}}
                     {{manga.num_of_chap}}
-                    <b-button>Edit</b-button>
+                    <b-button :to="`mangas/${manga.manga_id}`">Edit</b-button>
                     <b-button>Delete</b-button>
                 </div>
             </div>
@@ -77,9 +77,9 @@ export default {
         }
     },
     methods: {
-      onSubmit() {
-        console.log('submit!');
-      },
+    //   onSubmit() {
+    //     console.log('submit!');
+    //   },
       handleRemove(file, fileList) {
         console.log(file, fileList);
       },
@@ -91,7 +91,18 @@ export default {
       },
       beforeRemove(file, fileList) {
         return this.$confirm(`Cancel the transfert of ${ file.name } ?`);
-      }
+      },
+      addManga() {
+        // if (this.form.trim().length === 0) {
+        //     return
+        // }
+        this.$store.dispatch('mangas/addManga', {
+            cover: this.form.fileList,
+            manga_name: this.form.name,
+            author: this.form.author,
+            description: this.form.desc,
+        })
+        },
 
     },
     // mounted() {
