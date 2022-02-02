@@ -2,16 +2,16 @@ import axios from 'axios'
 
 export const state = () => ({
     mangas: [],
-    chapters: []
+    // chapters: []
   })
   
   export const getters = {
     mangas(state) {
       return state.mangas
     },
-    chapters(state) {
-      return state.chapters
-    }
+    // chapters(state) {
+    //   return state.chapters
+    // }
     
   }
   
@@ -38,20 +38,20 @@ export const state = () => ({
       state.mangas.splice(index, 1)
     },
 
-    addChapter(state, chapter) {
-      state.chapters.push({
-        chap_id: chapter.chap_id,
-        manga_id: chapter.manga_id,
-        chap_name: chapter.chap_name,
-        chap_content: chapter.chapter_content,
-        time_up: 0
-      })
-      const index = state.mangas.findIndex(
-        (item) => item.id === chapter.manga_id
-      )
-      state.mangas[index].manga_id = chapter.manga_id
-      console.log(chapter.manga_id)
-    },
+    // addChapter(state, chapter) {
+    //   state.chapters.push({
+    //     chap_id: chapter.chap_id,
+    //     manga_id: chapter.manga_id,
+    //     chap_name: chapter.chap_name,
+    //     chap_content: chapter.chapter_content,
+    //     time_up: 0
+    //   })
+    //   const index = state.mangas.findIndex(
+    //     (item) => item.id === chapter.manga_id
+    //   )
+    //   state.mangas[index].manga_id = chapter.manga_id
+    //   console.log(chapter.manga_id)
+    // },
 
   }
   
@@ -91,26 +91,26 @@ export const state = () => ({
         })
     },
 
-    addChapter(context, data) {
-      const mangaID = data.chapter
-      console.log(mangaID)
-      axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('login')
-      return new Promise((resolve, reject) => {
-      axios.post('https://mangakool-server.herokuapp.com/mangas/' + mangaID + '/chapters', {
-        chap_id: data.chap_id,
-        manga_id: data.manga_id,
-        chap_name: data.chap_name,
-        chap_content: data.chapter_content,
-      })
-        .then(response => {
-          context.commit('addChapter', response.data)
-          resolve(response)
-        })
-        .catch(error => {
-          console.log(error)
-          reject(error)
-        })
-      })
-    },
+    // addChapter(context, data) {
+    //   const mangaID = data.chapter
+    //   console.log(mangaID)
+    //   axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('login')
+    //   return new Promise((resolve, reject) => {
+    //   axios.post('https://mangakool-server.herokuapp.com/mangas/' + mangaID + '/chapters', {
+    //     chap_id: data.chap_id,
+    //     manga_id: data.manga_id,
+    //     chap_name: data.chap_name,
+    //     chap_content: data.chapter_content,
+    //   })
+    //     .then(response => {
+    //       context.commit('addChapter', response.data)
+    //       resolve(response)
+    //     })
+    //     .catch(error => {
+    //       console.log(error)
+    //       reject(error)
+    //     })
+    //   })
+    // },
   }
   

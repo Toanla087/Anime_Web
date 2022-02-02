@@ -128,11 +128,11 @@ export default {
       beforeRemove(file, fileList) {
         return this.$confirm(`Cancel the transfert of ${ file.name } ?`);
       },
-      addChapter() {
+      async addChapter() {
         // if (this.form.trim().length === 0) {
         //     return
         // }
-        this.$store.dispatch('mangas/addChapter', {
+        await axios.post(`https://mangakool-server.herokuapp.com/mangas/${this.$route.params.id}/chapters`, {
             cover: this.form.fileList,
             chap_name: this.form.name,
             chap_id: this.form.num,
